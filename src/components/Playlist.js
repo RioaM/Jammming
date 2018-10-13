@@ -2,6 +2,15 @@ import React, { Component } from 'react';
 import './Playlist.css';
 
 export class Playlist extends Component {
+  constructor(props){
+    super(props);
+    this.removeTrackFromPlaylist = this.removeTrackFromPlaylist.bind(this);
+  }
+
+  removeTrackFromPlaylist(event){
+
+  }
+
   render() {
     return (
       <div className="Playlist">

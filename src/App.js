@@ -9,12 +9,33 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      searchResults: [],
+      searchResults: [
+        {
+          songName: 'Tiny Dancer',
+          artists: 'Elton John',
+          album: 'Madman Across The Water',
+          songId: 1
+        },
+        {
+          songName: 'Tiny Dancer',
+          artists: 'Tim McGraw',
+          album: 'Love Story',
+          songId: 2
+        },
+        {
+          songName: 'Tiny Dancer',
+          artists: 'Rockabye Baby!',
+          album: 'Lullaby Renditions of Elton John',
+          songId: 3
+        }
+      ],
       newPlayList: [],
       token: ''
     };
     this.searchSpotify = this.searchSpotify.bind(this);
     this.getAuthorization = this.getAuthorization.bind(this);
+  //  this.addTrackToPlaylist = this.addTrackToPlaylist.bind(this);
+  //  this.removeTrackFromPlaylist = this.removeTrackFromPlaylist.bind(this);
   }
 
   searchSpotify(keywords){
