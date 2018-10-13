@@ -8,6 +8,7 @@
   font-family: 'Work Sans', sans-serif;
   font-weight: 500;
   color: #fff;
+  overflow-y: scroll;
 }
 
 .App-playlist {

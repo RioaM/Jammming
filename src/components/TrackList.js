@@ -8,7 +8,7 @@ export class TrackList extends Component {
       <div className="TrackList">
         {
             this.props.tracks ? this.props.tracks.map(track => {
-              return <Track key={track.songId.toString()} handleClick={this.props.handleClick} trackAction={"+"} track={track} />
+              return <Track key={track.songId.toString()} handleClick={this.props.handleClick} trackAction={this.props.trackAction} track={track} />
             }) : <div></div>
         }
       </div>
