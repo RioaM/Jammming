@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import './App.css';
 import { SearchBar } from './components/SearchBar';
 import { SearchResults } from './components/SearchResults';
 import { Playlist } from './components/Playlist';
 import { SpotifyAPI } from './util/SpotifyAPI';
+import './App.css';
 
 class App extends Component {
   constructor(props){
     super(props);
-    this.state = {
+    /*this.state = {
       searchResults: [
         {
           songName: 'Tiny Dancer',
@@ -28,28 +28,30 @@ class App extends Component {
           album: 'Lullaby Renditions of Elton John',
           songId: 3
         }
-      ],
-      newPlayList: [],
-      token: ''
+      ],*/
+    this.state = {
+      searchResults: [],
+      newPlaylist: [],
+      playlistName: '',
     };
     this.searchSpotify = this.searchSpotify.bind(this);
-    this.getAuthorization = this.getAuthorization.bind(this);
     this.addTrackToPlaylist = this.addTrackToPlaylist.bind(this);
     this.removeTrackFromPlaylist = this.removeTrackFromPlaylist.bind(this);
+    this.updatePlaylistName = this.updatePlaylistName.bind(this);
   }
 
     addTrackToPlaylist(event){
       //do not add the same song more than once
-      for(let y = 0; y < this.state.newPlayList.length; y++){
-        if(this.state.newPlayList[y].songId == event.target.id){
+      for(let y = 0; y < this.state.newPlaylist.length; y++){
+        if(this.state.newPlaylist[y].trackID == event.target.id){
           return;
         }
       }
       for(let x = 0; x < this.state.searchResults.length; x++){
-        if(this.state.searchResults[x].songId == event.target.id){
+        if(this.state.searchResults[x].trackID == event.target.id){
           this.setState((state) => {
-            state.newPlayList.push(state.searchResults[x]);
-            return {newPlayList: state.newPlayList};
+            state.newPlaylist.push(state.searchResults[x]);
+            return {newPlaylist: state.newPlaylist};
           });
           return;
         }
@@ -57,35 +59,38 @@ class App extends Component {
     }
 
       removeTrackFromPlaylist(event){
-        for(let x = 0; x < this.state.newPlayList.length; x++){
-          if(this.state.newPlayList[x].songId == event.target.id){
+        for(let x = 0; x < this.state.newPlaylist.length; x++){
+          if(this.state.newPlaylist[x].trackID == event.target.id){
             this.setState((state) => {
-              let playlist = state.newPlayList.slice(0,x).concat(state.newPlayList.slice(x+1));
-              return {newPlayList: playlist};
+              let playlist = state.newPlaylist.slice(0,x).concat(state.newPlaylist.slice(x+1));
+              return {newPlaylist: playlist};
             });
             return;
           }
         }
       }
 
-    searchSpotify(keywords){
-      SpotifyAPI.search(keywords).then(trackList => {
-        this.setState({searchResults: trackList});
-        console.log('searchResults:' + this.state.searchResults);
-      });
-  }
+    updatePlaylistName(event){
+      this.setState({playlistName: event.target.value});
+      console.log('New playlist name:' + this.state.playlistName);
+    }
 
-  getAuthorization(){
-    SpotifyAPI.authorization();
-  }
+    searchSpotify(keywords){
+      if(SpotifyAPI.getToken()){
+        SpotifyAPI.search(keywords).then(trackList => {
+          this.setState({searchResults: trackList});
+          console.log('searchResults:' + this.state.searchResults);
+        });
+      }
+    }
 
   render() {
     return (
         <div className="App">
-          <SearchBar authorization={this.getAuthorization} token={this.state.token} search={this.searchSpotify} />
+          <SearchBar search={this.searchSpotify} />
           <div className="App-playlist">
             <SearchResults searchResults={this.state.searchResults} addToPlaylist={this.addTrackToPlaylist}/>
-            <Playlist playlist={this.state.newPlayList} removeFromPlaylist={this.removeTrackFromPlaylist}/>
+            <Playlist playlist={this.state.newPlaylist} removeFromPlaylist={this.removeTrackFromPlaylist} updateName={this.updatePlaylistName}/>
           </div>
         </div>
     );

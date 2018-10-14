@@ -14,10 +14,7 @@ export class SearchBar extends Component {
   }
 
   handleSearch(event){
-    //if(this.state.token === ''){
-      this.props.authorization();
-    //}
-    //this.props.search(this.state.keywords);
+    this.props.search(this.state.keywords);
     event.preventDefault();
   }
 
