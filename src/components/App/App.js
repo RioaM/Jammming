@@ -23,12 +23,12 @@ class App extends Component {
   addTrackToPlaylist(event){
     //do not add the same song more than once
     for(let y = 0; y < this.state.newPlaylist.length; y++){
-      if(this.state.newPlaylist[y].trackURI == event.target.id){
+      if(this.state.newPlaylist[y].trackID === event.target.id){
         return;
       }
     }
     for(let x = 0; x < this.state.searchResults.length; x++){
-      if(this.state.searchResults[x].trackURI == event.target.id){
+      if(this.state.searchResults[x].trackID === event.target.id){
         this.setState((state) => {
           state.newPlaylist.push(state.searchResults[x]);
           return {newPlaylist: state.newPlaylist};
@@ -40,7 +40,7 @@ class App extends Component {
 
   removeTrackFromPlaylist(event){
     for(let x = 0; x < this.state.newPlaylist.length; x++){
-      if(this.state.newPlaylist[x].trackURI == event.target.id){
+      if(this.state.newPlaylist[x].trackID === event.target.id){
         this.setState((state) => {
           let playlist = state.newPlaylist.slice(0,x).concat(state.newPlaylist.slice(x+1));
           return {newPlaylist: playlist};
