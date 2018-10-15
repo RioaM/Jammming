@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { SearchBar } from './components/SearchBar/SearchBar';
-import { SearchResults } from './components/SearchResults/SearchResults';
-import { Playlist } from './components/Playlist/Playlist';
-import { SpotifyAPI } from './util/SpotifyAPI';
+import { SearchBar } from '../SearchBar/SearchBar';
+import { SearchResults } from '../SearchResults/SearchResults';
+import { Playlist } from '../Playlist/Playlist';
+import { SpotifyAPI } from '../../util/SpotifyAPI';
 import './App.css';
 
 class App extends Component {
@@ -11,7 +11,7 @@ class App extends Component {
     this.state = {
       searchResults: [],
       newPlaylist: [],
-      playlistName: '',
+      playlistName: 'New Playlist',
     };
     this.searchSpotify = this.searchSpotify.bind(this);
     this.addTrackToPlaylist = this.addTrackToPlaylist.bind(this);
