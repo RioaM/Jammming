@@ -38,6 +38,7 @@ class App extends Component {
     this.addTrackToPlaylist = this.addTrackToPlaylist.bind(this);
     this.removeTrackFromPlaylist = this.removeTrackFromPlaylist.bind(this);
     this.updatePlaylistName = this.updatePlaylistName.bind(this);
+    this.savePlaylist = this.savePlaylist.bind(this);
   }
 
     addTrackToPlaylist(event){
@@ -84,13 +85,18 @@ class App extends Component {
       }
     }
 
+    savePlaylist(){
+      console.log('name:' + this.state.playlistName + ', playlist:' + this.state.newPlaylist);
+      SpotifyAPI.savePlaylist(this.state.playlistName, this.state.newPlaylist);
+    }
+
   render() {
     return (
         <div className="App">
           <SearchBar search={this.searchSpotify} />
           <div className="App-playlist">
             <SearchResults searchResults={this.state.searchResults} addToPlaylist={this.addTrackToPlaylist}/>
-            <Playlist playlist={this.state.newPlaylist} removeFromPlaylist={this.removeTrackFromPlaylist} updateName={this.updatePlaylistName}/>
+            <Playlist playlist={this.state.newPlaylist} removeFromPlaylist={this.removeTrackFromPlaylist} updateName={this.updatePlaylistName} savePlaylist={this.savePlaylist}/>
           </div>
         </div>
     );

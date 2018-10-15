@@ -6,9 +6,10 @@ let token = "";
 export const SpotifyAPI = {
   search: (keywords) => {
   return fetch(`https://api.spotify.com/v1/search?q=${keywords}&type=track`,
-    {headers: {'Authorization': `Bearer BQBa40HTqN_gCIhU1zIHubE54SfU7yGtJsdQ9S_ZOCqo8DRVgLIwPGTvkCvb7l77tUGCjCUiFs5ZiSwgecXYf_HMkeMc9VKzY0KK1myZl5SpNF8NWF5Z8_usi4qFZxy1Gg4sgzwyqgFflc7arfuawS6URTD4_OnOdFngpBIXGvzVxeuOYcA`}
-  }).then(response => {
-    return response.json();
+    {
+      headers: {"Authorization": `Bearer ${token}`}
+    }).then(response => {
+      return response.json();
   }).then(jsonResponse => {
       if(jsonResponse.tracks) {
         return jsonResponse.tracks.items.map(track => {
@@ -19,7 +20,8 @@ export const SpotifyAPI = {
             trackName: track.name,
             artists: artists,
             album: track.album.name,
-            trackID: track.id
+            trackID: track.id,
+            trackURI: track.uri
           };
         });
       } else {
@@ -28,32 +30,57 @@ export const SpotifyAPI = {
         return [];
       }
     });
-    /*return [
+  },
+  savePlaylist: (playlistName, playlist) => {
+    const uriArray = playlist.map(track => {
+      return `spotify:track:${track.trackURI}`;
+    })
+    fetch('https://api.spotify.com/v1/me',
       {
-        songName: 'Tiny Dancer',
-        artists: 'Elton John',
-        album: 'Madman Across The Water'
-      },
-      {
-        songName: 'Tiny Dancer',
-        artists: 'Tim McGraw',
-        album: 'Love Story'
-      },
-      {
-        songName: 'Tiny Dancer',
-        artists: 'Rockabye Baby!',
-        album: 'Lullaby Renditions of Elton John'
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
       }
-    ]*/
+    ).then(response => {
+      return response.json();
+    }).then(jsonResponse => {
+      return jsonResponse.id;
+    }).then(user_id => {
+      fetch(`https://api.spotify.com/v1/users/${user_id}/playlists`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        body: JSON.stringify({
+          "name": `${playlistName}`})
+        }
+    )}).then(response => {
+      console.log('server response :', response);
+      console.log('another', JSON.parse(response.body).data);
+      return response.json();
+    }).then(jsonResponse => {
+        return jsonResponse.id;
+    }).then((playlist_id) => {
+      fetch(`https://api.spotify.com/v1/playlists/${playlist_id}/tracks`,
+        {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json; charset=utf-8"
+          },
+          body: JSON.stringify({uriArray})
+      })
+    });
   },
   getToken: () => {
     if(token){
       return token;
     } else if(window.location.href.match(/access_token=([^&]*)/)){
-      token = window.location.href.match(/access_token=([^&]*)/)[0];
-      let expiration = window.location.href.match(/expires_in=([^&]*)/)[0];
+      token = window.location.href.match(/access_token=([^&]*)/)[0].split('=')[1];
+      let expiration = window.location.href.match(/expires_in=([^&]*)/)[0].split('=')[1];
       //setTimeout(()=>{ token = ""}, expiration * 1000);
-      console.log('experation:' + expiration);
+      console.log('experation:' + expiration, token);
       window.setTimeout(() => token = '', expiration * 1000);
       window.history.pushState('Access Token', null, '/');
       return token;
