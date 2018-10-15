@@ -13,7 +13,7 @@ export const SpotifyAPI = {
       }).then(jsonResponse => {
         return jsonResponse.tracks.items.map(track => {
           const artists = track.artists.map(artist => {
-            r eturn artist.name;
+            return artist.name;
           }).join(', ');
           return {
             trackName: track.name,
