@@ -1,5 +1,7 @@
 const clientId = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
-let token = "";
+const redirectURI = 'http://rioam_work_sample.surge.sh/';
+//const redirectURI = 'http://localhost:3000/';
+let token = '';
 
 export const SpotifyAPI = {
   search: (keywords) => {
@@ -72,7 +74,7 @@ export const SpotifyAPI = {
           window.history.pushState('Access Token', null, '/');
           return token;
       } else {
-          window.location=`https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&scope=playlist-modify-public&redirect_uri=http://localhost:3000/`;
+          window.location=`https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&scope=playlist-modify-public&redirect_uri=${redirectURI}`;
       }
     }
   }
