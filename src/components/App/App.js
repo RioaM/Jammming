@@ -64,6 +64,9 @@ class App extends Component {
 
   savePlaylist(){
     SpotifyAPI.savePlaylist(this.state.playlistName, this.state.newPlaylist);
+    this.setState({newPlaylist: []});
+    this.setState({playlistName: 'New Playlist'});
+
   }
 
   render() {
@@ -72,7 +75,7 @@ class App extends Component {
         <SearchBar search={this.searchSpotify} />
         <div className="App-playlist">
           <SearchResults searchResults={this.state.searchResults} addToPlaylist={this.addTrackToPlaylist}/>
-          <Playlist playlist={this.state.newPlaylist} removeFromPlaylist={this.removeTrackFromPlaylist} updateName={this.updatePlaylistName} savePlaylist={this.savePlaylist}/>
+          <Playlist playlistName={this.state.playlistName} playlist={this.state.newPlaylist} removeFromPlaylist={this.removeTrackFromPlaylist} updateName={this.updatePlaylistName} savePlaylist={this.savePlaylist}/>
         </div>
       </div>
     );
