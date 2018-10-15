@@ -1,6 +1,4 @@
-require('dotenv').config();
-
-const clientId = process.env.SPOTIFY_CLIENT_ID;
+const clientId = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
 let token = "";
 
 export const SpotifyAPI = {
@@ -74,7 +72,7 @@ export const SpotifyAPI = {
           window.history.pushState('Access Token', null, '/');
           return token;
       } else {
-          window.location='https://accounts.spotify.com/authorize?client_id=9afbcab757f54c6db8ba42e6d8e8a88e&response_type=token&scope=playlist-modify-public&redirect_uri=http://localhost:3000/';
+          window.location=`https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&scope=playlist-modify-public&redirect_uri=http://localhost:3000/`;
       }
     }
   }
